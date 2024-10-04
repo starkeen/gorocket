@@ -1,4 +1,4 @@
-module github.com/starkeen/gorocket
+module gorocket
 
 go 1.13
 
