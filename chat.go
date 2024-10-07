@@ -310,3 +310,26 @@ func (c *Client) UnpinMessage(param *SingleMessageId) (*SimpleSuccessResponse, e
 
 	return &res, nil
 }
+
+func (d *DeleteMessageResponse) UnmarshalJSON(data []byte) error {
+	type Alias DeleteMessageResponse
+	aux := &struct {
+		Ts string `json:"ts"`
+		*Alias
+	}{
+		Alias: (*Alias)(d),
+	}
+
+	if err := json.Unmarshal(data, &aux); err != nil {
+		return err
+	}
+
+	// Преобразуем строку ts в int64
+	ts, err := strconv.ParseInt(aux.Ts, 10, 64)
+	if err != nil {
+		return fmt.Errorf("cannot convert ts to int64: %v", err)
+	}
+	d.Ts = ts
+
+	return nil
+}
