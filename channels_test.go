@@ -136,7 +136,7 @@ func TestDeleteChannel(t *testing.T) {
 
 func TestGetChannelInfo(t *testing.T) {
 	server := httptest.NewServer(getHandler(t, &HandlerHelper{
-		ResponseBody: `{"channel":{"_id":"ByehQjC44FwMeiLbX","name":"testing","fname":"testing","t":"c","msgs":0,"usersCount":2,"u":{"_id":"HKKPmF8rZh45GMHWH","username":"marcos.defendi"},"customFields":{},"broadcast":false,"encrypted":false,"ts":"2020-05-21T13:14:07.070Z","ro":false,"default":false,"sysMes":true,"_updatedAt":"2020-05-21T13:14:07.096Z"},"success":true}`,
+		ResponseBody: `{"channel":{"_id":"ByehQjC44FwMeiLbX","name":"testing","fname":"testing","t":"c","msgs":0,"usersCount":2,"u":{"_id":"HKKPmF8rZh45GMHWH","username":"marcos.defendi"},"customFields":{},"broadcast":false,"encrypted":false,"ts":"2020-05-21T13:14:07.070Z","ro":false,"default":false,"sysMes":["rm"],"_updatedAt":"2020-05-21T13:14:07.096Z"},"success":true}`,
 	}))
 	defer server.Close()
 
@@ -161,7 +161,7 @@ func TestGetChannelInfo(t *testing.T) {
 	require.Equal(t, "2020-05-21T13:14:07.07Z", resp.Channel.Ts.Format("2006-01-02T15:04:05.999Z"))
 	require.Equal(t, false, resp.Channel.Ro)
 	require.Equal(t, false, resp.Channel.Default)
-	require.Equal(t, true, resp.Channel.SysMes)
+	require.Equal(t, []string{"rm"}, resp.Channel.SysMes)
 	require.Equal(t, "2020-05-21T13:14:07.096Z", resp.Channel.UpdatedAt.Format("2006-01-02T15:04:05.999Z"))
 	require.True(t, resp.Success)
 }
@@ -218,7 +218,7 @@ func TestChannelKick(t *testing.T) {
 
 func TestChannelList(t *testing.T) {
 	server := httptest.NewServer(getHandler(t, &HandlerHelper{
-		ResponseBody: `{"channels":[{"_id":"ByehQjC44FwMeiLbX","name":"test-test","t":"c","usernames":["testing1"],"msgs":0,"u":{"_id":"aobEdbYhXfu5hkeqG","username":"testing1"},"ts":"2016-12-09T15:08:58.042Z","ro":false,"sysMes":true,"_updatedAt":"2016-12-09T15:22:40.656Z"},{"_id":"t7qapfhZjANMRAi5w","name":"testing","t":"c","usernames":["testing2"],"msgs":0,"u":{"_id":"y65tAmHs93aDChMWu","username":"testing2"},"ts":"2016-12-01T15:08:58.042Z","ro":false,"sysMes":true,"_updatedAt":"2016-12-09T15:22:40.656Z"}],"offset":0,"count":1,"total":1,"success":true}`,
+		ResponseBody: `{"channels":[{"_id":"ByehQjC44FwMeiLbX","name":"test-test","t":"c","usernames":["testing1"],"msgs":0,"u":{"_id":"aobEdbYhXfu5hkeqG","username":"testing1"},"ts":"2016-12-09T15:08:58.042Z","ro":false,"sysMes":["rm"],"_updatedAt":"2016-12-09T15:22:40.656Z"},{"_id":"t7qapfhZjANMRAi5w","name":"testing","t":"c","usernames":["testing2"],"msgs":0,"u":{"_id":"y65tAmHs93aDChMWu","username":"testing2"},"ts":"2016-12-01T15:08:58.042Z","ro":false,"sysMes":true,"_updatedAt":"2016-12-09T15:22:40.656Z"}],"offset":0,"count":1,"total":1,"success":true}`,
 	}))
 	defer server.Close()
 
@@ -237,7 +237,7 @@ func TestChannelList(t *testing.T) {
 	require.Equal(t, "testing1", resp.Channels[0].U.Username)
 	require.Equal(t, "2016-12-09T15:08:58.042Z", resp.Channels[0].Ts.Format("2006-01-02T15:04:05.999Z"))
 	require.Equal(t, false, resp.Channels[0].Ro)
-	require.Equal(t, true, resp.Channels[0].SysMes)
+	require.Equal(t, []string{"rm"}, resp.Channels[0].SysMes)
 	require.Equal(t, "2016-12-09T15:22:40.656Z", resp.Channels[0].UpdatedAt.Format("2006-01-02T15:04:05.999Z"))
 	require.Equal(t, "t7qapfhZjANMRAi5w", resp.Channels[1].ID)
 	require.Equal(t, "testing", resp.Channels[1].Name)
@@ -248,7 +248,7 @@ func TestChannelList(t *testing.T) {
 	require.Equal(t, "testing2", resp.Channels[1].U.Username)
 	require.Equal(t, "2016-12-01T15:08:58.042Z", resp.Channels[1].Ts.Format("2006-01-02T15:04:05.999Z"))
 	require.Equal(t, false, resp.Channels[1].Ro)
-	require.Equal(t, true, resp.Channels[1].SysMes)
+	require.Equal(t, []string{"rm"}, resp.Channels[1].SysMes)
 	require.Equal(t, "2016-12-09T15:22:40.656Z", resp.Channels[1].UpdatedAt.Format("2006-01-02T15:04:05.999Z"))
 	require.Equal(t, 0, resp.Offset)
 	require.Equal(t, 1, resp.Count)

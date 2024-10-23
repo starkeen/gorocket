@@ -95,7 +95,7 @@ type ChannelInfo struct {
 	Ts        time.Time `json:"ts"`
 	Ro        bool      `json:"ro"`
 	Default   bool      `json:"default"`
-	SysMes    bool      `json:"sysMes"`
+	SysMes    []string  `json:"sysMes"`
 	UpdatedAt time.Time `json:"_updatedAt"`
 }
 
@@ -135,7 +135,7 @@ type ChannelList struct {
 	U         UChat     `json:"u"`
 	Ts        time.Time `json:"ts"`
 	Ro        bool      `json:"ro"`
-	SysMes    bool      `json:"sysMes"`
+	SysMes    []string  `json:"sysMes"`
 	UpdatedAt time.Time `json:"_updatedAt"`
 }
 
